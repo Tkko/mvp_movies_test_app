@@ -19,7 +19,7 @@ class ResultsPageGridItems extends StatelessWidget {
           crossAxisSpacing: 10.w,
           mainAxisSpacing: 10.w,
           crossAxisCount: 2,
-          childAspectRatio: .52,
+          childAspectRatio: .51,
         ),
         builderDelegate: PagedChildBuilderDelegate<MovieItemProvider>(
           itemBuilder: (_, itemProvider, ___) => ChangeNotifierProvider.value(

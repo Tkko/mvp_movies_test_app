@@ -16,7 +16,7 @@ class HomePageLoaded extends StatelessWidget {
       crossAxisSpacing: 10.w,
       mainAxisSpacing: 10.w,
       crossAxisCount: 2,
-      childAspectRatio: .52,
+      childAspectRatio: .51,
       children: items.map((itemProvider) {
         return ChangeNotifierProvider.value(
           value: itemProvider,
