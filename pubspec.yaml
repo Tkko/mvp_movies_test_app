@@ -1,0 +1,54 @@
+name: mvp_movies
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.11.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  #Core
+  http: ^0.13.3
+  retry: ^3.1.0
+  get_it: ^7.2.0
+  bloc: ^7.1.0
+  flutter_bloc: ^7.2.0
+  rxdart: ^0.27.2
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+
+  # Views
+  google_fonts: ^2.1.0
+  flutter_screenutil: ^5.0.0+2
+  flutter_staggered_animations: ^1.0.0
+  shimmer: ^2.0.0
+  dismissible_page: ^0.6.3
+  flutter_svg: ^0.22.0
+  animate_do: ^2.0.0
+  infinite_scroll_pagination: ^3.1.0
+  cached_network_image: ^3.1.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/svg/
+
+  fonts:
+    - family: Gilroy
+      fonts:
+        - asset: assets/fonts/Gilroy-Regular.ttf
+        - asset: assets/fonts/Gilroy-RegularItalic.ttf
+          weight: 400
+        - asset: assets/fonts/Gilroy-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Gilroy-Black.ttf
+          weight: 900
