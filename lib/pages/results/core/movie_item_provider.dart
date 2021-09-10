@@ -8,6 +8,8 @@ class MovieItemProvider extends ChangeNotifier {
   int id;
   MovieItemModel item;
   DataState _state = DataInitial();
+  bool _favoritesLoading = false;
+  bool _visibilityLoading = false;
   bool isFavorite = false;
   bool isHidden = false;
 
@@ -37,11 +39,13 @@ class MovieItemProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<int> get _favorites => [
+        ...storage.favoriteMoviesBox.values,
+        ...storage.favoriteTvSeriesBox.values,
+      ];
+
   void initFavoriteState() {
-    isFavorite = [
-      ...storage.favoriteMoviesBox.values,
-      ...storage.favoriteTvSeriesBox.values,
-    ].contains(id);
+    isFavorite = _favorites.contains(id);
   }
 
   void initVisibilityState() {
@@ -89,24 +93,29 @@ class MovieItemProvider extends ChangeNotifier {
     }
   }
 
-  void toggleFavorite() {
-    final favorites = storage.favoriteMoviesBox.values;
-    if (favorites.contains(id)) {
-      removeFavorite(id);
+  void toggleFavorite() async {
+    if (_favoritesLoading) return;
+    _favoritesLoading = true;
+    if (_favorites.contains(id)) {
+      await removeFavorite(id);
     } else {
-      addFavorite(id);
+      await addFavorite(id);
     }
+    _favoritesLoading = false;
     initFavoriteState();
     notifyListeners();
   }
 
-  void toggleVisibility() {
+  void toggleVisibility() async {
+    if (_visibilityLoading) return;
     final items = storage.hiddenMoviesBox.values;
+    _visibilityLoading = true;
     if (items.contains(id)) {
-      show(id);
+      await show(id);
     } else {
-      hide(id);
+      await hide(id);
     }
+    _visibilityLoading = false;
     initVisibilityState();
     notifyListeners();
   }
@@ -116,36 +125,38 @@ class MovieItemProvider extends ChangeNotifier {
     state = DataFailed(message);
   }
 
-  void removeFavorite(int id) {
+  Future<void> removeFavorite(int id) {
     if (isMovie) {
       final idx = storage.favoriteMoviesBox.values.asList().indexOf(id);
       if (idx != -1) {
-        storage.favoriteMoviesBox.deleteAt(idx);
-      } else {
-        final idx = storage.favoriteTvSeriesBox.values.asList().indexOf(id);
-        if (idx != -1) {
-          storage.favoriteTvSeriesBox.deleteAt(idx);
-        }
+        return storage.favoriteMoviesBox.deleteAt(idx);
+      }
+    } else {
+      final idx = storage.favoriteTvSeriesBox.values.asList().indexOf(id);
+      if (idx != -1) {
+        return storage.favoriteTvSeriesBox.deleteAt(idx);
       }
     }
+    return null;
   }
 
-  void addFavorite(int id) {
+  Future<int> addFavorite(int id) {
     if (isMovie) {
-      storage.favoriteMoviesBox.add(id);
+      return storage.favoriteMoviesBox.add(id);
     } else {
-      storage.favoriteTvSeriesBox.add(id);
+      return storage.favoriteTvSeriesBox.add(id);
     }
   }
 
-  void show(int id) {
+  Future<void> show(int id) {
     final idx = storage.hiddenMoviesBox.values.asList().indexOf(id);
     if (idx != -1) {
-      storage.hiddenMoviesBox.deleteAt(idx);
+      return storage.hiddenMoviesBox.deleteAt(idx);
     }
+    return null;
   }
 
-  void hide(int id) {
-    storage.hiddenMoviesBox.add(id);
+  Future<int> hide(int id) {
+    return storage.hiddenMoviesBox.add(id);
   }
 }

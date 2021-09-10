@@ -33,7 +33,6 @@ class _AppViewState extends State<AppView> {
         theme: appThemes.theme,
         routes: appRoutes,
         initialRoute: AppRoutes.HOME,
-        home: const SplashPage(),
       ),
     );
   }
